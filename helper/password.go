@@ -11,13 +11,13 @@ type PasswordManager interface {
 	ComparePassword(password string, dbPassword string) error
 }
 
-type PasswordManager struct{}
+type passwordManager struct{}
 
 func NewPasswordManager() PasswordManager {
-	return &PasswordManager{}
+	return &passwordManager{}
 }
 
-func (pm *PasswordManager) HashPassword(password string) (string, error) {
+func (pm *passwordManager) HashPassword(password string) (string, error) {
 	result, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	if err != nil {
 		log.Println("hash password error:", err.Error())

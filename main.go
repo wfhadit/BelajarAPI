@@ -2,9 +2,12 @@ package main
 
 import (
 	"BelajarAPI/config"
-	"BelajarAPI/controller/activity"
-	"BelajarAPI/controller/user"
-	"BelajarAPI/model"
+	td "BelajarAPI/features/activity/data"
+	th "BelajarAPI/features/activity/handler"
+	ts "BelajarAPI/features/activity/services"
+	"BelajarAPI/features/user/data"
+	"BelajarAPI/features/user/handler"
+	"BelajarAPI/features/user/services"
 	"BelajarAPI/routes"
 
 	"github.com/labstack/echo/v4"
@@ -16,18 +19,20 @@ func main() {
 	cfg := config.InitConfig()
 	db := config.InitSQL(cfg)
 
-	userModel := model.UserModel{Connection: db}
-	userController := user.UserController{Model: userModel}
+	userData := data.New(db)
+	userService := services.NewService(userData)
+	userHandler := handler.NewUserHandler(userService)
 
-	activityModel := model.ActivityModel{Connection: db}
-	activityController := activity.ActivityController{Model: activityModel}
+	activityData := td.New(db)
+	activityService := ts.NewActivityService(activityData)
+	activityHandler := th.NewHandler(activityService)
 
 	e.Pre(middleware.RemoveTrailingSlash())
 	e.Use(middleware.Logger())
 	e.Use(middleware.CORS())
 
 	// Initialize routes
-	routes.InitRoute(e, userController, activityController)
+	routes.InitRoute(e, userHandler, activityHandler)
 
 	e.Logger.Fatal(e.Start(":1000"))
 }

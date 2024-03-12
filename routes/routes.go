@@ -2,28 +2,37 @@ package routes
 
 import (
 	"BelajarAPI/config"
-	"BelajarAPI/controller/activity"
-	"BelajarAPI/controller/user"
+	activity "BelajarAPI/features/activity"
+	user "BelajarAPI/features/user"
 
 	echojwt "github.com/labstack/echo-jwt/v4"
 	"github.com/labstack/echo/v4"
 )
 
-func InitRoute(c *echo.Echo, ctl user.UserController, ctr activity.ActivityController) {
-	c.POST("/users", ctl.Register())
-	c.POST("/login", ctl.Login())
+func InitRoute(c *echo.Echo, ctl user.UserController, ac activity.ActivityController) {
+	userRoute(c, ctl)
+	activityRoute(c, ac)
+}
 
-	// Activities endpoints with JWT middleware
-	c.POST("/activity", ctr.AddActivity(), echojwt.WithConfig(echojwt.Config{
+func userRoute(c *echo.Echo, ctl user.UserController) {
+	c.POST("/users", ctl.Add())
+	c.POST("/login", ctl.Login())
+	c.GET("/profile", ctl.Profile(), echojwt.WithConfig(echojwt.Config{
 		SigningKey: []byte(config.JWTSECRET),
 	}))
-	c.GET("/activities/:userHP", ctr.GetActivityByUserHp(), echojwt.WithConfig(echojwt.Config{
+}
+
+func activityRoute(c *echo.Echo, ac activity.ActivityController) {
+	c.POST("/activities", ac.Add(), echojwt.WithConfig(echojwt.Config{
 		SigningKey: []byte(config.JWTSECRET),
 	}))
-	c.PUT("/activity/:userHP", ctr.UpdateActivityByUserHp(), echojwt.WithConfig(echojwt.Config{
+	c.GET("/activities", ac.ShowMyActivity(), echojwt.WithConfig(echojwt.Config{
+	SigningKey: []byte(config.JWTSECRET),
+	}))
+	c.PUT("/activities/:activityID", ac.Update(), echojwt.WithConfig(echojwt.Config{
 		SigningKey: []byte(config.JWTSECRET),
 	}))
-	c.DELETE("/activity/:userHP", ctr.DeleteActivityByUserHp(), echojwt.WithConfig(echojwt.Config{
+	c.DELETE("/activities/:activityID", ac.Delete(), echojwt.WithConfig(echojwt.Config{
 		SigningKey: []byte(config.JWTSECRET),
 	}))
 }
