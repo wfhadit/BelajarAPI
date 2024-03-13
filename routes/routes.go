@@ -29,10 +29,10 @@ func activityRoute(c *echo.Echo, ac activity.ActivityController) {
 	c.GET("/activities", ac.ShowMyActivity(), echojwt.WithConfig(echojwt.Config{
 	SigningKey: []byte(config.JWTSECRET),
 	}))
-	c.PUT("/activities/:activityID", ac.Update(), echojwt.WithConfig(echojwt.Config{
+	c.PUT("/activities/:id", ac.Update(), echojwt.WithConfig(echojwt.Config{
 		SigningKey: []byte(config.JWTSECRET),
 	}))
-	c.DELETE("/activities/:activityID", ac.Delete(), echojwt.WithConfig(echojwt.Config{
+	c.DELETE("/activities/:id", ac.Delete(), echojwt.WithConfig(echojwt.Config{
 		SigningKey: []byte(config.JWTSECRET),
 	}))
 }

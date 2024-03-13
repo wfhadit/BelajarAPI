@@ -24,9 +24,9 @@ type UserModel interface {
 }
 
 type User struct {
-	Nama 		string
-	Hp 			string
-	Password 	string
+	Nama 		string `form:"nama"`
+	Hp 			string `form:"hp"`
+	Password 	string `form:"password"`
 }
 
 type Login struct {
@@ -35,7 +35,7 @@ type Login struct {
 }
 
 type Register struct {
-	Nama 		string `validate:"required,alpha"`
-	Hp 			string `validate:"required,min=10,max=13,numeric"`
-	Password 	string `validate:"required,alphanum,min=8"`
+	Nama 		string `form:"nama" validate:"required,alpha"`
+	Hp 			string `form:"hp" validate:"required,min=10,max=13,numeric"`
+	Password 	string `form:"password" validate:"required,alphanum,min=8"`
 }
