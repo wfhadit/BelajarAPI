@@ -34,5 +34,5 @@ func main() {
 	// Initialize routes
 	routes.InitRoute(e, userHandler, activityHandler)
 
-	e.Logger.Fatal(e.Start(":1000"))
+	e.Logger.Fatal(e.Start(":1323"))
 }
