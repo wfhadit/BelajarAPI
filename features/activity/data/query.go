@@ -44,7 +44,7 @@ func (am *model) UpdateActivity(pemilik string, activityID uint, data activity.A
 
 // DeleteActivity menghapus aktivitas berdasarkan ID aktivitas.
 func (am *model) DeleteActivity(activityID uint) error {
-    result := am.connection.Delete(&Activity{}, activityID)
+    result := am.connection.Unscoped().Delete(&Activity{}, activityID)
     if result.Error != nil {
         return result.Error
     }

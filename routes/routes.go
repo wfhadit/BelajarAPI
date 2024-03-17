@@ -23,16 +23,16 @@ func userRoute(c *echo.Echo, ctl user.UserController) {
 }
 
 func activityRoute(c *echo.Echo, ac activity.ActivityController) {
-	c.POST("/activities", ac.Add(), echojwt.WithConfig(echojwt.Config{
+	c.POST("/activity", ac.Add(), echojwt.WithConfig(echojwt.Config{
 		SigningKey: []byte(config.JWTSECRET),
 	}))
 	c.GET("/activities", ac.ShowMyActivity(), echojwt.WithConfig(echojwt.Config{
 	SigningKey: []byte(config.JWTSECRET),
 	}))
-	c.PUT("/activities/:id", ac.Update(), echojwt.WithConfig(echojwt.Config{
+	c.PUT("/activity/:id", ac.Update(), echojwt.WithConfig(echojwt.Config{
 		SigningKey: []byte(config.JWTSECRET),
 	}))
-	c.DELETE("/activities/:id", ac.Delete(), echojwt.WithConfig(echojwt.Config{
+	c.DELETE("/activity/:id", ac.Delete(), echojwt.WithConfig(echojwt.Config{
 		SigningKey: []byte(config.JWTSECRET),
 	}))
 }
